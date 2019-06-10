@@ -4,6 +4,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const CopyWebpackPlugin= require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
 
@@ -14,6 +15,7 @@ module.exports = (env, argv) => {
         use: [
             MiniCssExtractPlugin.loader,
             'css-loader',
+            'postcss-loader',
             'sass-loader']
     };
 
@@ -55,18 +57,28 @@ module.exports = (env, argv) => {
                 js,
                 scss,
                 files,
-                html
+                // html
             ]
         },
 
         plugins: [
-            new CleanWebpackPlugin(),
-            // new HtmlWebpackPlugin({
-            //     template: './src/main.html'
-            // }),
+            // new CleanWebpackPlugin(),
+            new HtmlWebpackPlugin({
+                template: './src/index.html'
+            }),
             new MiniCssExtractPlugin({
                 filename: 'style.css'
-            })
+            }),
+            new CopyWebpackPlugin([
+                {
+                    from: './src/fonts',
+                    to: './fonts'
+                },
+                {
+                    from: './src/img',
+                    to: './img'
+                }
+            ])
         ],
 
         resolve: {
