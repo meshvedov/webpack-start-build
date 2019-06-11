@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
@@ -14,9 +15,19 @@ module.exports = (env, argv) => {
         test: /\.scss$/,
         use: [
             MiniCssExtractPlugin.loader,
-            'css-loader',
-            'postcss-loader',
-            'sass-loader']
+            {
+                loader: 'css-loader',
+                options: { sourceMap: true }
+            },
+            {
+                loader: 'postcss-loader',
+                options: { sourceMap: true }
+            },
+            {
+                loader: 'sass-loader',
+                options: { sourceMap: true }
+            },
+        ]
     };
 
     const js = {
@@ -48,7 +59,7 @@ module.exports = (env, argv) => {
             index: './src/js/index.js'
         },
         output: {
-            filename: 'bundle.js',
+            filename: '[name].js',
             path: path.resolve(__dirname, 'dist'),
             // publicPath: "/"
         },
@@ -62,12 +73,12 @@ module.exports = (env, argv) => {
         },
 
         plugins: [
-            // new CleanWebpackPlugin(),
+            new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: './src/index.html'
             }),
             new MiniCssExtractPlugin({
-                filename: 'style.css'
+                filename: '[name].css'
             }),
             new CopyWebpackPlugin([
                 {
@@ -78,7 +89,10 @@ module.exports = (env, argv) => {
                     from: './src/img',
                     to: './img'
                 }
-            ])
+            ]),
+            new webpack.SourceMapDevToolPlugin({
+                filename: '[name].map'
+            })
         ],
 
         resolve: {
@@ -87,10 +101,15 @@ module.exports = (env, argv) => {
             }
         },
 
-        devtool: "source-map",
-        watchOptions: {
-            poll: true
-        }
+        devServer: {
+            port: 8081,
+            overlay: {
+                warnings: false,
+                errors: true
+            }
+        },
+
+        devtool: 'cheap-module-eval-source-map'
     };
 
     if (isProductionBuild) {

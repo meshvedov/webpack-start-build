@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "wds": "webpack-dev-server --mode=development",
+    "wds": "webpack-dev-server --mode=development --open",
     "build": "webpack --mode=production",
     "dev": "webpack --mode=development",
     "watch": "webpack --mode=development --watch"
@@ -23,6 +23,7 @@
     "clean-webpack-plugin": "^3.0.0",
     "copy-webpack-plugin": "^5.0.3",
     "css-loader": "^2.1.1",
+    "cssnano": "^4.1.10",
     "extract-loader": "^3.1.0",
     "file-loader": "^4.0.0",
     "html-loader": "^0.5.5",
@@ -30,6 +31,7 @@
     "mini-css-extract-plugin": "^0.7.0",
     "node-sass": "^4.12.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "path": "^0.12.7",
     "postcss-loader": "^3.0.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
@@ -39,5 +41,9 @@
     "webpack-cli": "^3.3.3",
     "webpack-dev-server": "^3.7.1"
   },
+  "browserslist": [
+    "> 1%",
+    "last 3 version"
+  ],
   "dependencies": {}
 }
